@@ -25,49 +25,6 @@ const TodoList = (props) => {
     </div>
   );
 };
-const OngoingList = (props) => {
-  return (
-    <div className="card-transparent rounded m-2 shadow">
-      <div className="card-body text-center">
-        <div className="card-title">
-          <h4>
-            Ongoing
-            <span className="badge bg-primary rounded-pill">
-              {props.ongoing.length}
-            </span>
-          </h4>
-        </div>
-        <Table
-          list={props.ongoing}
-          removeToDo={props.removeToDo}
-          moveToNext={props.moveToNext}
-        />
-      </div>
-    </div>
-  );
-};
-const CompletedList = (props) => {
-  return (
-    <div className="card-transparent rounded m-2 shadow">
-      <div className="card-body text-center">
-        <div className="card-title">
-          <h4>
-            Completed
-            <span className="badge bg-primary rounded-pill">
-              {props.completed.length}
-            </span>
-          </h4>
-        </div>
-        <Table
-          list={props.completed}
-          removeToDo={props.removeToDo}
-          moveToNext={props.moveToNext}
-        />
-      </div>
-    </div>
-  );
-};
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -190,13 +147,13 @@ class App extends Component {
               removeToDo={this.removeToDo}
               moveToNext={this.moveToNext}
             />
-            <OngoingList
-              ongoing={ongoing}
+            <TodoList
+              todos={ongoing}
               removeToDo={this.removeToDo}
               moveToNext={this.moveToNext}
             />
-            <CompletedList
-              completed={completed}
+            <TodoList
+              todos={completed}
               removeToDo={this.removeToDo}
               moveToNext={this.moveToNext}
             />
