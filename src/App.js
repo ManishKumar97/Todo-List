@@ -5,7 +5,6 @@ import { db } from "./firebase-config";
 import firebase from "firebase";
 import "./index.css";
 const TodoList = (props) => {
-  const source = 0;
   return (
     <div className="card-transparent rounded m-2 shadow">
       <div className="card-body text-center">
@@ -18,7 +17,6 @@ const TodoList = (props) => {
           </h4>
         </div>
         <Table
-          source={source}
           list={props.todos}
           removeToDo={props.removeToDo}
           moveToNext={props.moveToNext}
@@ -28,7 +26,6 @@ const TodoList = (props) => {
   );
 };
 const OngoingList = (props) => {
-  const source = 1;
   return (
     <div className="card-transparent rounded m-2 shadow">
       <div className="card-body text-center">
@@ -41,7 +38,6 @@ const OngoingList = (props) => {
           </h4>
         </div>
         <Table
-          source={source}
           list={props.ongoing}
           removeToDo={props.removeToDo}
           moveToNext={props.moveToNext}
@@ -51,7 +47,6 @@ const OngoingList = (props) => {
   );
 };
 const CompletedList = (props) => {
-  const source = 2;
   return (
     <div className="card-transparent rounded m-2 shadow">
       <div className="card-body text-center">
@@ -64,7 +59,6 @@ const CompletedList = (props) => {
           </h4>
         </div>
         <Table
-          source={source}
           list={props.completed}
           removeToDo={props.removeToDo}
           moveToNext={props.moveToNext}
@@ -83,6 +77,7 @@ class App extends Component {
       completed: [],
     };
     db.collection("todos")
+      .orderBy("timestamp")
       .get()
       .then((snapshot) => {
         let tdlist = [];
@@ -137,12 +132,6 @@ class App extends Component {
       default:
         break;
     }
-    console.log("Remove To do Todos");
-    console.log(this.state.todos);
-    console.log("Ongoing");
-    console.log(this.state.ongoing);
-    console.log("Completed");
-    console.log(this.state.Completed);
   };
   moveToNext = (task) => {
     db.collection("todos")
@@ -153,6 +142,7 @@ class App extends Component {
       });
     if (task.status === 0) {
       const { todos } = this.state;
+      task.status += 1;
       this.setState({
         todos: todos.filter((person, i) => {
           return person.id !== task.id;
@@ -161,6 +151,7 @@ class App extends Component {
       });
     } else if (task.status === 1) {
       const { ongoing } = this.state;
+      task.status += 1;
       this.setState({
         ongoing: ongoing.filter((person, i) => {
           return person.id !== task.id;
@@ -168,33 +159,21 @@ class App extends Component {
         completed: [...this.state.completed, task],
       });
     }
-    console.log("Move to next Todos");
-    console.log(this.state.todos);
-    console.log("Ongoing");
-    console.log(this.state.ongoing);
-    console.log("Completed");
-    console.log(this.state.Completed);
   };
   handleSubmit = (task) => {
-    console.log("handlesubmit task");
-    console.log(task);
     task.timestamp = firebase.firestore.FieldValue.serverTimestamp();
-    //const l = Object.create(this.state.todos);
-    const { todos } = this.state;
+    db.collection("todos")
+      .add({
+        status: task.status,
+        task: task.task,
+        timestamp: task.timestamp,
+      })
+      .then(function (docRef) {
+        task.id = docRef.id;
+      });
     this.setState({
-      todos: todos.push(task),
+      todos: [...this.state.todos, task],
     });
-    db.collection("todos").add({
-      status: task.status,
-      task: task.task,
-      timestamp: task.timestamp,
-    });
-    console.log("handle submit Todos");
-    console.log(this.state.todos);
-    console.log("Ongoing");
-    console.log(this.state.ongoing);
-    console.log("Completed");
-    console.log(this.state.Completed);
   };
   render() {
     const { todos, ongoing, completed } = this.state;

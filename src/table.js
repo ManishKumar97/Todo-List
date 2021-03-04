@@ -19,8 +19,7 @@ const TableBody = (props) => {
     console.log(props.todos);
     console.log("nextbutton source");
     console.log(props.todos[0].status);
-    // if (props.todos.length > 0 && props.todos[0].status < 2) {
-    if (props.source < 2)
+    if (props.todos.length > 0 && props.todos[0].status < 2) {
       nextButton = (
         <button
           type="button"
@@ -33,7 +32,7 @@ const TableBody = (props) => {
           <MdNavigateNext className=""></MdNavigateNext>
         </button>
       );
-
+    }
     return (
       <tr key={index} data-id={todo.id}>
         <td className="col-8">{todo.task}</td>
@@ -57,13 +56,12 @@ const TableBody = (props) => {
 };
 class Table extends React.Component {
   render() {
-    const { list, removeToDo, source, moveToNext } = this.props;
+    const { list, removeToDo, moveToNext } = this.props;
 
     return (
       <table className="table table-hover">
         <TableHeader />
         <TableBody
-          source={source}
           todos={list}
           removeToDo={removeToDo}
           moveToNext={moveToNext}

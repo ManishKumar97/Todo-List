@@ -3,6 +3,7 @@ class Form extends Component {
   initialState = {
     task: "",
     status: 0,
+    timestamp: {},
   };
   state = this.initialState;
   handleChange = (event) => {
