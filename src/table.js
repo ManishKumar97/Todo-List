@@ -1,5 +1,6 @@
 import React from "react";
 import { MdDeleteForever, MdNavigateNext } from "react-icons/md";
+import "./index.css";
 const TableHeader = () => {
   return (
     <thead>
@@ -14,24 +15,38 @@ const TableHeader = () => {
 const TableBody = (props) => {
   const NewRows = props.todos.map((todo, index) => {
     var nextButton;
+    console.log("nextbutton Todos");
+    console.log(props.todos);
+    console.log("nextbutton source");
+    console.log(props.todos[0].status);
+    // if (props.todos.length > 0 && props.todos[0].status < 2) {
     if (props.source < 2)
       nextButton = (
         <button
           type="button"
-          onClick={() => props.moveToNext(index, props.source, todo)}
+          className="btn btn-success btn-sm rounded-0"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Move"
+          onClick={() => props.moveToNext(todo)}
         >
-          <MdNavigateNext className="text-success"></MdNavigateNext>
+          <MdNavigateNext className=""></MdNavigateNext>
         </button>
       );
+
     return (
-      <tr key={index}>
+      <tr key={index} data-id={todo.id}>
         <td className="col-8">{todo.task}</td>
         <td className="col-2">
           <button
             type="button"
-            onClick={() => props.removeToDo(index, props.source)}
+            className="btn btn-danger btn-sm rounded-0 "
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Delete"
+            onClick={() => props.removeToDo(todo)}
           >
-            <MdDeleteForever className="text-danger"></MdDeleteForever>
+            <MdDeleteForever className=""></MdDeleteForever>
           </button>
         </td>
         <td className="col-2">{nextButton}</td>

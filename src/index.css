@@ -1,0 +1,21 @@
+h2,
+h4 {
+  color: #ffffff;
+}
+li {
+  margin: 0.2em;
+  border-radius: 0.2em;
+  opacity: 1;
+}
+/* ul li:hover {
+  background-color: #2e77ae;
+} */
+/* .card-group .card {
+  background-color: #ff8e2b;
+} */
+.card {
+  opacity: 0.8;
+}
+.card ul {
+  opacity: 1;
+}
